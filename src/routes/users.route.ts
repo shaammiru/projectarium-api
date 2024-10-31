@@ -1,6 +1,13 @@
 import { Hono } from "hono";
 
 export const userRoute = new Hono()
+  .get("/", async (c) => {
+    return c.json({
+      message: "get all users success",
+      error: null,
+      data: "TODO",
+    });
+  })
   .get("/profile", async (c) => {
     return c.json({
       message: "get profile success",
@@ -20,5 +27,21 @@ export const userRoute = new Hono()
       message: "upload profile picture success",
       error: null,
       data: "TODO",
+    });
+  })
+  .get("/:id", async (c) => {
+    const id = c.req.param("id");
+    return c.json({
+      message: "get user by id success",
+      error: null,
+      data: id,
+    });
+  })
+  .delete("/:id", async (c) => {
+    const id = c.req.param("id");
+    return c.json({
+      message: "delete user by id success",
+      error: null,
+      data: id,
     });
   });
