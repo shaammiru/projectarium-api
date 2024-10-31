@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
-import { authRoute } from "./routes/auth";
+import { authRoute } from "./routes/auth.route";
+import { userRoute } from "./routes/users.route";
 
 const app = new Hono();
 
@@ -12,6 +13,7 @@ app.get("/", (c) => {
   });
 });
 
-app.route("/api/accounts", authRoute);
+app.route("/api/auth", authRoute);
+app.route("/api/user", userRoute);
 
 export default app;
