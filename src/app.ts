@@ -7,13 +7,7 @@ const app = new Hono();
 
 app.use("*", logger());
 
-app.get("/", (c) => {
-  return c.json({
-    message: "Hello from Honoooo!",
-  });
-});
-
-app.route("/api/auth", authRoute);
-app.route("/api/user", userRoute);
+app.route("/api/auths", authRoute);
+app.route("/api/users", userRoute);
 
 export default app;
