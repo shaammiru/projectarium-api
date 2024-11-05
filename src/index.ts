@@ -1,7 +1,26 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import compression from "compression";
+import authHandler from "./handler/auth.handler";
+import userHandler from "./handler/user.handler";
+import errorMw from "./middleware/error.mw";
 
 const app = express();
+
+app.use(express.json());
+app.use(cors());
+app.use(helmet());
+app.use(compression());
+
+app.use("/api/auth", authHandler);
+app.use("/api/users", userHandler);
+
+app.use(errorMw.jsonErrorHandler);
+app.use(errorMw.joiErrorHandler);
+app.use(errorMw.prismaErrorHandler);
+app.use(errorMw.errorHandler);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port http://localhost:${process.env.PORT}`);
