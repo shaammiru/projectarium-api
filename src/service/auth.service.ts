@@ -5,6 +5,7 @@ import responseBody from "../helper/response.helper";
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    req.body.password = await authHelper.hashPassword(req.body.password);
     const user = await userService.create(req.body);
 
     return res.status(201).json(responseBody("register success", null, user));

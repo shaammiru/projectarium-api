@@ -2,23 +2,20 @@ import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 export const verifyToken = (req: any, res: Response, next: NextFunction) => {
-  let token = req.cookies.token;
+  const header = req.headers.authorization as string;
+
+  if (!header) {
+    return res.status(401).json({
+      error: "Unauthorized",
+    });
+  }
+
+  const token = header.split(" ")[1];
 
   if (!token) {
-    const header = req.headers.authorization as string;
-    if (!header) {
-      return res.status(401).json({
-        error: "Unauthorized",
-      });
-    }
-
-    token = header.split(" ")[1];
-
-    if (!token) {
-      return res.status(401).json({
-        error: "Unauthorized",
-      });
-    }
+    return res.status(401).json({
+      error: "Unauthorized",
+    });
   }
 
   try {
