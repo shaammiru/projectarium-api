@@ -1,8 +1,8 @@
-import app from "./app";
+import "dotenv/config";
+import express from "express";
 
-Bun.serve({
-  port: Bun.env.PORT!,
-  fetch: app.fetch,
+const app = express();
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port http://localhost:${process.env.PORT}`);
 });
-
-console.log(`Server running on http://localhost:${Bun.env.PORT!}`);
