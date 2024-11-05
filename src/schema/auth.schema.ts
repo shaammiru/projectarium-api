@@ -4,7 +4,10 @@ export const registerSchema = z.object({
   username: z
     .string({ message: "username must be a string" })
     .toLowerCase()
-    .regex(/^[a-z0-9]+$/, { message: "username only accept letter and number" })
+    .regex(/^[a-z0-9._]+$/, {
+      message:
+        "username only accept letters, numbers, periods, and underscores",
+    })
     .min(4, { message: "username must be at least 4 characters" }),
   fullname: z
     .string({ message: "fullname must be a string" })
@@ -12,6 +15,9 @@ export const registerSchema = z.object({
   password: z
     .string({ message: "password must be a string" })
     .min(8, { message: "password must be at least 8 characters" }),
+  birthdate: z
+    .string({ message: "birthdate must be a string" })
+    .date("birthdate must be a valid date, example 'YYYY-MM-DD'"),
 });
 
 export const loginSchema = z.object({
