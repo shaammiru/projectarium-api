@@ -17,29 +17,96 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
+  projects           Project[]
+  partners           Partner[]
+  projectDiscussions ProjectDiscussion[]
+  partnerDiscussions PartnerDiscussion[]
+
   @@map("users")
 }
 
 model Project {
   id        String   @id @default(uuid()) @db.Uuid
+  title     String
+  userId    String   @map("user_id") @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  projectTags        ProjectTag[]
+  projectDiscussions ProjectDiscussion[]
 
   @@map("projects")
 }
 
+model ProjectTag {
+  id        String @id @default(uuid()) @db.Uuid
+  name      String
+  projectId String @map("project_id") @db.Uuid
+
+  project Project @relation(fields: [projectId], references: [id])
+
+  @@map("project_tags")
+}
+
 model Partner {
   id        String   @id @default(uuid()) @db.Uuid
+  title     String
+  userId    String   @map("user_id") @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  partnertTags       PartnertTag[]
+  partnerDiscussions PartnerDiscussion[]
 
   @@map("partners")
 }
 
-model Discussion {
-  id        String   @id @default(uuid()) @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+model PartnertTag {
+  id        String @id @default(uuid()) @db.Uuid
+  name      String
+  partnerId String @map("project_id") @db.Uuid
 
-  @@map("discussions")
+  partner Partner @relation(fields: [partnerId], references: [id])
+
+  @@map("partner_tags")
+}
+
+model ProjectDiscussion {
+  id           String   @id @default(uuid()) @db.Uuid
+  comment      String   @db.Text
+  userId       String   @map("user_id") @db.Uuid
+  projectId    String   @map("project_id") @db.Uuid
+  discussionId String?  @map("discussion_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
+
+  user               User               @relation(fields: [userId], references: [id])
+  project            Project            @relation(fields: [projectId], references: [id])
+  projectDiscussions ProjectDiscussion? @relation("project_discussions.discussion_id_TO_project_discussion", fields: [discussionId], references: [id])
+
+  replies ProjectDiscussion[] @relation("project_discussions.discussion_id_TO_project_discussion")
+
+  @@map("project_discussions")
+}
+
+model PartnerDiscussion {
+  id           String   @id @default(uuid()) @db.Uuid
+  comment      String   @db.Text
+  userId       String   @map("user_id") @db.Uuid
+  partnerId    String   @map("partner_id") @db.Uuid
+  discussionId String?  @map("discussion_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
+
+  user               User               @relation(fields: [userId], references: [id])
+  partner            Partner            @relation(fields: [partnerId], references: [id])
+  partnerDiscussions PartnerDiscussion? @relation("partner_discussions.discussion_id_TO_partner_discussion", fields: [discussionId], references: [id])
+
+  replies PartnerDiscussion[] @relation("partner_discussions.discussion_id_TO_partner_discussion")
+
+  @@map("partner_discussions")
 }
