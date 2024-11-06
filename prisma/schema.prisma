@@ -29,8 +29,19 @@ model User {
   partnerDiscussions PartnerDiscussion[]
   projectLikes       ProjectLike[]
   partnerLikes       PartnerLike[]
+  userLinks          UserLink[]
 
   @@map("users")
+}
+
+model UserLink {
+  id     String @id @default(uuid()) @db.Uuid
+  url    String
+  userId String @map("user_id") @db.Uuid
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_links")
 }
 
 model Project {
@@ -47,6 +58,7 @@ model Project {
   projectDiscussions ProjectDiscussion[]
   projectLikes       ProjectLike[]
   projectImages      ProjectImage[]
+  projectLinks       ProjectLink[]
 
   @@map("projects")
 }
@@ -71,14 +83,24 @@ model ProjectImage {
   @@map("project_images")
 }
 
+model ProjectLink {
+  id        String @id @default(uuid()) @db.Uuid
+  url       String
+  projectId String @map("project_id") @db.Uuid
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_links")
+}
+
 model ProjectLike {
   id        String   @id @default(uuid()) @db.Uuid
-  userId    String   @db.Uuid
+  userId    String?  @db.Uuid
   projectId String   @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
 
-  user    User    @relation(fields: [userId], references: [id])
-  project Project @relation(fields: [projectId], references: [id])
+  user    User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@unique([userId, projectId])
   @@map("project_likes")

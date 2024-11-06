@@ -17,6 +17,15 @@ CREATE TABLE "users" (
 );
 
 -- CreateTable
+CREATE TABLE "user_links" (
+    "id" UUID NOT NULL,
+    "url" TEXT NOT NULL,
+    "user_id" UUID NOT NULL,
+
+    CONSTRAINT "user_links_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "projects" (
     "id" UUID NOT NULL,
     "title" TEXT NOT NULL,
@@ -44,6 +53,15 @@ CREATE TABLE "project_images" (
     "projectId" UUID NOT NULL,
 
     CONSTRAINT "project_images_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "project_links" (
+    "id" UUID NOT NULL,
+    "url" TEXT NOT NULL,
+    "project_id" UUID NOT NULL,
+
+    CONSTRAINT "project_links_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -132,6 +150,9 @@ CREATE UNIQUE INDEX "project_likes_userId_projectId_key" ON "project_likes"("use
 CREATE UNIQUE INDEX "partner_likes_userId_partnerId_key" ON "partner_likes"("userId", "partnerId");
 
 -- AddForeignKey
+ALTER TABLE "user_links" ADD CONSTRAINT "user_links_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "projects" ADD CONSTRAINT "projects_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -139,6 +160,9 @@ ALTER TABLE "project_tags" ADD CONSTRAINT "project_tags_project_id_fkey" FOREIGN
 
 -- AddForeignKey
 ALTER TABLE "project_images" ADD CONSTRAINT "project_images_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "projects"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "project_links" ADD CONSTRAINT "project_links_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "projects"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "project_likes" ADD CONSTRAINT "project_likes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -11,6 +11,12 @@ const create = async (req: any, res: Response, next: NextFunction) => {
         : req.body.projectTags || []
     ).map((tag: string) => ({ name: tag }));
 
+    const projectLinks = (
+      typeof req.body.projectTags === "string"
+        ? req.body.projectLinks.split(",").map((url: string) => url.trim())
+        : req.body.projectLinks || []
+    ).map((url: string) => ({ url: url }));
+
     const imageUrls = await imageHelper.upload(
       req.files as Express.Multer.File[]
     );
@@ -19,6 +25,7 @@ const create = async (req: any, res: Response, next: NextFunction) => {
     req.body.userId = req.user.id;
     req.body.projectImages = mappedImages;
     req.body.projectTags = projectTags;
+    req.body.projectLinks = projectLinks;
 
     const project = await projectData.create(req.body);
 
@@ -62,8 +69,15 @@ const updateById = async (req: any, res: Response, next: NextFunction) => {
         : req.body.projectTags || []
     ).map((tag: string) => ({ name: tag }));
 
+    const projectLinks = (
+      typeof req.body.projectTags === "string"
+        ? req.body.projectLinks.split(",").map((url: string) => url.trim())
+        : req.body.projectLinks || []
+    ).map((url: string) => ({ url: url }));
+
     req.body.userId = req.user.id;
     req.body.projectTags = projectTags;
+    req.body.projectLinks = projectLinks;
 
     if (req.files && req.files.length > 0) {
       const projectId = req.params.id;
@@ -113,10 +127,38 @@ const deleteById = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const userLike = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    await projectData.createLikeById(req.user.id, req.params.id);
+    const likeCount = await projectData.getLikeById(req.params.id);
+
+    return res
+      .status(200)
+      .json(reponseHelper("like project success", null, { likeCount }));
+  } catch (error) {
+    next(error);
+  }
+};
+
+const userDislike = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    await projectData.deletLikeById(req.user.id, req.params.id);
+    const likeCount = await projectData.getLikeById(req.params.id);
+
+    return res
+      .status(200)
+      .json(reponseHelper("dislike project success", null, { likeCount }));
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   create,
   list,
   getById,
   updateById,
   deleteById,
+  userLike,
+  userDislike,
 };

@@ -10,6 +10,9 @@ const create = joi.object({
   password: joi.string().min(8).required(),
   birthdate: joi.string().isoDate().required(),
   bio: joi.string(),
+  userLinks: joi
+    .alternatives()
+    .try(joi.string().uri(), joi.array().items(joi.string().uri())),
 });
 
 const update = joi.object({
@@ -21,6 +24,9 @@ const update = joi.object({
   password: joi.string().min(8),
   birthdate: joi.string().isoDate(),
   bio: joi.string(),
+  userLinks: joi
+    .alternatives()
+    .try(joi.string().uri(), joi.array().items(joi.string().uri())),
 });
 
 export default {

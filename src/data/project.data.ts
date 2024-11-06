@@ -8,6 +8,7 @@ const create = (data: {
   content: string;
   projectImages: { imageUrl: string }[];
   projectTags?: { name: string }[];
+  projectLinks?: { url: string }[];
 }) => {
   return prisma.project.create({
     data: {
@@ -16,6 +17,9 @@ const create = (data: {
       userId: data.userId,
       projectTags: {
         create: data.projectTags,
+      },
+      projectLinks: {
+        create: data.projectLinks,
       },
       projectImages: {
         create: data.projectImages,
@@ -35,11 +39,30 @@ const create = (data: {
           name: true,
         },
       },
+      projectLinks: {
+        select: {
+          url: true,
+        },
+      },
       projectImages: {
         select: {
           imageUrl: true,
         },
       },
+      _count: {
+        select: {
+          projectLikes: true,
+        },
+      },
+    },
+  });
+};
+
+const createLikeById = (userId: string, projectId: string) => {
+  return prisma.projectLike.create({
+    data: {
+      userId: userId,
+      projectId: projectId,
     },
   });
 };
@@ -63,6 +86,11 @@ const list = () => {
       projectImages: {
         select: {
           imageUrl: true,
+        },
+      },
+      _count: {
+        select: {
+          projectLikes: true,
         },
       },
     },
@@ -99,6 +127,11 @@ const getById = (id: string) => {
           imageUrl: true,
         },
       },
+      _count: {
+        select: {
+          projectLikes: true,
+        },
+      },
     },
   });
 };
@@ -111,11 +144,18 @@ const updateById = (
     content?: string;
     projectImages?: { imageUrl: string }[];
     projectTags?: { name: string }[];
+    projectLinks?: { url: string }[];
   }
 ) => {
   return prisma.$transaction(async (prisma) => {
     const deleteProjectTags = data.projectTags
       ? prisma.projectTag.deleteMany({
+          where: { projectId: id },
+        })
+      : Promise.resolve(null);
+
+    const deleteProjectLinks = data.projectLinks
+      ? prisma.projectLink.deleteMany({
           where: { projectId: id },
         })
       : Promise.resolve(null);
@@ -128,6 +168,7 @@ const updateById = (
 
     await deleteProjectTags;
     await deleteProjectImages;
+    await deleteProjectLinks;
 
     const updatedProject = await prisma.project.update({
       where: {
@@ -139,6 +180,9 @@ const updateById = (
         ...(data.userId && { userId: data.userId }),
         projectTags: {
           create: data.projectTags,
+        },
+        projectLinks: {
+          create: data.projectLinks,
         },
         projectImages: {
           create: data.projectImages,
@@ -158,15 +202,33 @@ const updateById = (
             name: true,
           },
         },
+        projectLinks: {
+          select: {
+            url: true,
+          },
+        },
         projectImages: {
           select: {
             imageUrl: true,
+          },
+        },
+        _count: {
+          select: {
+            projectLikes: true,
           },
         },
       },
     });
 
     return updatedProject;
+  });
+};
+
+const getLikeById = (projectId: string) => {
+  return prisma.projectLike.count({
+    where: {
+      projectId: projectId,
+    },
   });
 };
 
@@ -178,11 +240,25 @@ const deleteById = (id: string) => {
   });
 };
 
+const deletLikeById = (userId: string, projectId: string) => {
+  return prisma.projectLike.delete({
+    where: {
+      userId_projectId: {
+        userId: userId,
+        projectId: projectId,
+      },
+    },
+  });
+};
+
 export default {
   create,
+  createLikeById,
   list,
   getById,
+  getLikeById,
   listProjectImages,
   updateById,
   deleteById,
+  deletLikeById,
 };

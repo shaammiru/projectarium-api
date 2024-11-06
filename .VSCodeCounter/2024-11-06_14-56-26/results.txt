@@ -1,0 +1,70 @@
+Date : 2024-11-06 14:56:26
+Directory : d:\Codes\remote\projects\projectarium-api
+Total : 26 files,  5802 codes, 154 comments, 291 blanks, all 6247 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          2 |      4,439 |          0 |          2 |      4,441 |
+| TypeScript         |         19 |      1,064 |         29 |        183 |      1,276 |
+| Prisma             |          1 |        149 |          0 |         46 |        195 |
+| MS SQL             |          1 |        122 |         35 |         48 |        205 |
+| YAML               |          1 |         14 |          0 |          3 |         17 |
+| JSON with Comments |          1 |         13 |         88 |          9 |        110 |
+| TOML               |          1 |          1 |          2 |          0 |          3 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                     | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                        |         26 |      5,802 |        154 |        291 |      6,247 |
+| . (Files)                                                                                                |          4 |      4,466 |         88 |         14 |      4,568 |
+| prisma                                                                                                   |          3 |        272 |         37 |         94 |        403 |
+| prisma (Files)                                                                                           |          1 |        149 |          0 |         46 |        195 |
+| prisma\migrations                                                                                        |          2 |        123 |         37 |         48 |        208 |
+| prisma\migrations (Files)                                                                                |          1 |          1 |          2 |          0 |          3 |
+| prisma\migrations\20241106064941_initial_migrate                                                         |          1 |        122 |         35 |         48 |        205 |
+| src                                                                                                      |         19 |      1,064 |         29 |        183 |      1,276 |
+| src (Files)                                                                                              |          1 |         26 |          0 |          7 |         33 |
+| src\data                                                                                                 |          2 |        363 |          0 |         29 |        392 |
+| src\handler                                                                                              |          3 |         67 |          0 |         25 |         92 |
+| src\helper                                                                                               |          3 |         56 |          0 |         15 |         71 |
+| src\middleware                                                                                           |          4 |        225 |         29 |         43 |        297 |
+| src\service                                                                                              |          3 |        249 |          0 |         52 |        301 |
+| src\validation                                                                                           |          3 |         78 |          0 |         12 |         90 |
++----------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                                 | language           | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| d:\Codes\remote\projects\projectarium-api\docker-compose.yml                                             | YAML               |         14 |          0 |          3 |         17 |
+| d:\Codes\remote\projects\projectarium-api\package-lock.json                                              | JSON               |      4,389 |          0 |          1 |      4,390 |
+| d:\Codes\remote\projects\projectarium-api\package.json                                                   | JSON               |         50 |          0 |          1 |         51 |
+| d:\Codes\remote\projects\projectarium-api\prisma\migrations\20241106064941_initial_migrate\migration.sql | MS SQL             |        122 |         35 |         48 |        205 |
+| d:\Codes\remote\projects\projectarium-api\prisma\migrations\migration_lock.toml                          | TOML               |          1 |          2 |          0 |          3 |
+| d:\Codes\remote\projects\projectarium-api\prisma\schema.prisma                                           | Prisma             |        149 |          0 |         46 |        195 |
+| d:\Codes\remote\projects\projectarium-api\src\data\project.data.ts                                       | TypeScript         |        248 |          0 |         17 |        265 |
+| d:\Codes\remote\projects\projectarium-api\src\data\user.data.ts                                          | TypeScript         |        115 |          0 |         12 |        127 |
+| d:\Codes\remote\projects\projectarium-api\src\handler\auth.handler.ts                                    | TypeScript         |         12 |          0 |          5 |         17 |
+| d:\Codes\remote\projects\projectarium-api\src\handler\project.handler.ts                                 | TypeScript         |         30 |          0 |         11 |         41 |
+| d:\Codes\remote\projects\projectarium-api\src\handler\user.handler.ts                                    | TypeScript         |         25 |          0 |          9 |         34 |
+| d:\Codes\remote\projects\projectarium-api\src\helper\auth.helper.ts                                      | TypeScript         |         22 |          0 |          5 |         27 |
+| d:\Codes\remote\projects\projectarium-api\src\helper\image.helper.ts                                     | TypeScript         |         26 |          0 |          8 |         34 |
+| d:\Codes\remote\projects\projectarium-api\src\helper\response.helper.ts                                  | TypeScript         |          8 |          0 |          2 |         10 |
+| d:\Codes\remote\projects\projectarium-api\src\index.ts                                                   | TypeScript         |         26 |          0 |          7 |         33 |
+| d:\Codes\remote\projects\projectarium-api\src\middleware\auth.mw.ts                                      | TypeScript         |         58 |          0 |         15 |         73 |
+| d:\Codes\remote\projects\projectarium-api\src\middleware\error.mw.ts                                     | TypeScript         |         67 |         29 |         11 |        107 |
+| d:\Codes\remote\projects\projectarium-api\src\middleware\multer.mw.ts                                    | TypeScript         |         25 |          0 |          4 |         29 |
+| d:\Codes\remote\projects\projectarium-api\src\middleware\valid.mw.ts                                     | TypeScript         |         75 |          0 |         13 |         88 |
+| d:\Codes\remote\projects\projectarium-api\src\service\auth.service.ts                                    | TypeScript         |         44 |          0 |         10 |         54 |
+| d:\Codes\remote\projects\projectarium-api\src\service\project.service.ts                                 | TypeScript         |        136 |          0 |         29 |        165 |
+| d:\Codes\remote\projects\projectarium-api\src\service\user.service.ts                                    | TypeScript         |         69 |          0 |         13 |         82 |
+| d:\Codes\remote\projects\projectarium-api\src\validation\auth.valid.ts                                   | TypeScript         |         19 |          0 |          4 |         23 |
+| d:\Codes\remote\projects\projectarium-api\src\validation\project.valid.ts                                | TypeScript         |         27 |          0 |          4 |         31 |
+| d:\Codes\remote\projects\projectarium-api\src\validation\user.valid.ts                                   | TypeScript         |         32 |          0 |          4 |         36 |
+| d:\Codes\remote\projects\projectarium-api\tsconfig.json                                                  | JSON with Comments |         13 |         88 |          9 |        110 |
+| Total                                                                                                    |                    |      5,802 |        154 |        291 |      6,247 |
++----------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

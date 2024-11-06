@@ -18,6 +18,8 @@ router.post(
 
 router.get("/", verifyToken, verifyAdmin, userService.list);
 
+router.get("/profile", verifyToken, userService.getProfile);
+
 router.get("/:id", userService.getById);
 
 router.put(

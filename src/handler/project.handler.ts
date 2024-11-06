@@ -33,4 +33,8 @@ router.put(
 
 router.delete("/:id", verifyToken, projectService.deleteById);
 
+router.post("/:id/like", verifyToken, projectService.userLike);
+
+router.post("/:id/dislike", verifyToken, projectService.userDislike);
+
 export default router;

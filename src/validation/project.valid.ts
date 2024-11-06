@@ -7,6 +7,9 @@ const create = joi.object({
   projectTags: joi
     .alternatives()
     .try(joi.string(), joi.array().items(joi.string())),
+  projectLinks: joi
+    .alternatives()
+    .try(joi.string().uri(), joi.array().items(joi.string().uri())),
 });
 
 const update = joi.object({
@@ -16,6 +19,9 @@ const update = joi.object({
   projectTags: joi
     .alternatives()
     .try(joi.string(), joi.array().items(joi.string())),
+  projectLinks: joi
+    .alternatives()
+    .try(joi.string().uri(), joi.array().items(joi.string().uri())),
 });
 
 export default {

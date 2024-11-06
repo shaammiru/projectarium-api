@@ -5,6 +5,13 @@ import responseBody from "../helper/response.helper";
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const userLinks = (
+      typeof req.body.projectTags === "string"
+        ? req.body.userLinks.split(",").map((url: string) => url.trim())
+        : req.body.userLinks || []
+    ).map((url: string) => ({ url: url }));
+
+    req.body.userLinks = userLinks;
     req.body.password = await authHelper.hashPassword(req.body.password);
     const user = await userData.create(req.body);
 
@@ -40,6 +47,19 @@ const getById = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getProfile = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user.id;
+    const user = await userData.getById(userId);
+
+    return res
+      .status(200)
+      .json(responseBody("get profile success", null, user));
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     req.body.password = await authHelper.hashPassword(req.body.password);
@@ -69,6 +89,7 @@ export default {
   create,
   list,
   getById,
+  getProfile,
   updateById,
   deleteById,
 };

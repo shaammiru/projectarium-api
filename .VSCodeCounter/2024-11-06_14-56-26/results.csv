@@ -1,0 +1,28 @@
+"filename", "language", "JSON with Comments", "TypeScript", "Prisma", "TOML", "JSON", "YAML", "MS SQL", "comment", "blank", "total"
+"d:\Codes\remote\projects\projectarium-api\docker-compose.yml", "YAML", 0, 0, 0, 0, 0, 14, 0, 0, 3, 17
+"d:\Codes\remote\projects\projectarium-api\package-lock.json", "JSON", 0, 0, 0, 0, 4389, 0, 0, 0, 1, 4390
+"d:\Codes\remote\projects\projectarium-api\package.json", "JSON", 0, 0, 0, 0, 50, 0, 0, 0, 1, 51
+"d:\Codes\remote\projects\projectarium-api\prisma\migrations\20241106064941_initial_migrate\migration.sql", "MS SQL", 0, 0, 0, 0, 0, 0, 122, 35, 48, 205
+"d:\Codes\remote\projects\projectarium-api\prisma\migrations\migration_lock.toml", "TOML", 0, 0, 0, 1, 0, 0, 0, 2, 0, 3
+"d:\Codes\remote\projects\projectarium-api\prisma\schema.prisma", "Prisma", 0, 0, 149, 0, 0, 0, 0, 0, 46, 195
+"d:\Codes\remote\projects\projectarium-api\src\data\project.data.ts", "TypeScript", 0, 248, 0, 0, 0, 0, 0, 0, 17, 265
+"d:\Codes\remote\projects\projectarium-api\src\data\user.data.ts", "TypeScript", 0, 115, 0, 0, 0, 0, 0, 0, 12, 127
+"d:\Codes\remote\projects\projectarium-api\src\handler\auth.handler.ts", "TypeScript", 0, 12, 0, 0, 0, 0, 0, 0, 5, 17
+"d:\Codes\remote\projects\projectarium-api\src\handler\project.handler.ts", "TypeScript", 0, 30, 0, 0, 0, 0, 0, 0, 11, 41
+"d:\Codes\remote\projects\projectarium-api\src\handler\user.handler.ts", "TypeScript", 0, 25, 0, 0, 0, 0, 0, 0, 9, 34
+"d:\Codes\remote\projects\projectarium-api\src\helper\auth.helper.ts", "TypeScript", 0, 22, 0, 0, 0, 0, 0, 0, 5, 27
+"d:\Codes\remote\projects\projectarium-api\src\helper\image.helper.ts", "TypeScript", 0, 26, 0, 0, 0, 0, 0, 0, 8, 34
+"d:\Codes\remote\projects\projectarium-api\src\helper\response.helper.ts", "TypeScript", 0, 8, 0, 0, 0, 0, 0, 0, 2, 10
+"d:\Codes\remote\projects\projectarium-api\src\index.ts", "TypeScript", 0, 26, 0, 0, 0, 0, 0, 0, 7, 33
+"d:\Codes\remote\projects\projectarium-api\src\middleware\auth.mw.ts", "TypeScript", 0, 58, 0, 0, 0, 0, 0, 0, 15, 73
+"d:\Codes\remote\projects\projectarium-api\src\middleware\error.mw.ts", "TypeScript", 0, 67, 0, 0, 0, 0, 0, 29, 11, 107
+"d:\Codes\remote\projects\projectarium-api\src\middleware\multer.mw.ts", "TypeScript", 0, 25, 0, 0, 0, 0, 0, 0, 4, 29
+"d:\Codes\remote\projects\projectarium-api\src\middleware\valid.mw.ts", "TypeScript", 0, 75, 0, 0, 0, 0, 0, 0, 13, 88
+"d:\Codes\remote\projects\projectarium-api\src\service\auth.service.ts", "TypeScript", 0, 44, 0, 0, 0, 0, 0, 0, 10, 54
+"d:\Codes\remote\projects\projectarium-api\src\service\project.service.ts", "TypeScript", 0, 136, 0, 0, 0, 0, 0, 0, 29, 165
+"d:\Codes\remote\projects\projectarium-api\src\service\user.service.ts", "TypeScript", 0, 69, 0, 0, 0, 0, 0, 0, 13, 82
+"d:\Codes\remote\projects\projectarium-api\src\validation\auth.valid.ts", "TypeScript", 0, 19, 0, 0, 0, 0, 0, 0, 4, 23
+"d:\Codes\remote\projects\projectarium-api\src\validation\project.valid.ts", "TypeScript", 0, 27, 0, 0, 0, 0, 0, 0, 4, 31
+"d:\Codes\remote\projects\projectarium-api\src\validation\user.valid.ts", "TypeScript", 0, 32, 0, 0, 0, 0, 0, 0, 4, 36
+"d:\Codes\remote\projects\projectarium-api\tsconfig.json", "JSON with Comments", 13, 0, 0, 0, 0, 0, 0, 88, 9, 110
+"Total", "-", 13, 1064, 149, 1, 4439, 14, 122, 154, 291, 6247
