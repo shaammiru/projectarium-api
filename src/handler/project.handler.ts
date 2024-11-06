@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { verifyAdmin, verifyToken } from "../middleware/auth.mw";
+import { verifyToken } from "../middleware/auth.mw";
 import { imageUpload } from "../middleware/multer.mw";
 import validate from "../middleware/valid.mw";
 import projectValid from "../validation/project.valid";
@@ -18,7 +18,7 @@ router.post(
   projectService.create
 );
 
-router.get("/", verifyToken, verifyAdmin, projectService.list);
+router.get("/", projectService.list);
 
 router.get("/:id", projectService.getById);
 
