@@ -5,14 +5,20 @@ const prisma = new PrismaClient();
 const create = (data: {
   title: string;
   userId: string;
+  content: string;
+  projectImages: { imageUrl: string }[];
   projectTags?: { name: string }[];
 }) => {
   return prisma.project.create({
     data: {
       title: data.title,
+      content: data.content,
       userId: data.userId,
       projectTags: {
         create: data.projectTags,
+      },
+      projectImages: {
+        create: data.projectImages,
       },
     },
     include: {
@@ -27,6 +33,11 @@ const create = (data: {
       projectTags: {
         select: {
           name: true,
+        },
+      },
+      projectImages: {
+        select: {
+          imageUrl: true,
         },
       },
     },
@@ -47,6 +58,11 @@ const list = () => {
       projectTags: {
         select: {
           name: true,
+        },
+      },
+      projectImages: {
+        select: {
+          imageUrl: true,
         },
       },
     },
@@ -72,25 +88,59 @@ const getById = (id: string) => {
           name: true,
         },
       },
+      projectImages: {
+        select: {
+          imageUrl: true,
+        },
+      },
     },
   });
 };
 
 const updateById = (
   id: string,
-  data: { title?: string; userId?: string; projectTags?: { name: string }[] }
+  data: {
+    title?: string;
+    userId?: string;
+    content?: string;
+    projectImages?: { imageUrl: string }[];
+    projectTags?: { name: string }[];
+  }
 ) => {
-  return prisma.project.update({
-    where: {
-      id: id,
-    },
-    data: {
-      ...(data.title && { title: data.title }),
-      ...(data.userId && { userId: data.userId }),
-      projectTags: {
-        create: data.projectTags,
+  return prisma.$transaction(async (prisma) => {
+    const deleteProjectTags = data.projectTags
+      ? prisma.projectTag.deleteMany({
+          where: { projectId: id },
+        })
+      : Promise.resolve(null);
+
+    const deleteProjectImages = data.projectImages
+      ? prisma.projectImage.deleteMany({
+          where: { projectId: id },
+        })
+      : Promise.resolve(null);
+
+    await deleteProjectTags;
+    await deleteProjectImages;
+
+    const updatedProject = await prisma.project.update({
+      where: {
+        id: id,
       },
-    },
+      data: {
+        ...(data.title && { title: data.title }),
+        ...(data.content && { content: data.content }),
+        ...(data.userId && { userId: data.userId }),
+        projectTags: {
+          create: data.projectTags,
+        },
+        projectImages: {
+          create: data.projectImages,
+        },
+      },
+    });
+
+    return updatedProject;
   });
 };
 

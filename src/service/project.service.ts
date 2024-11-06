@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import projectData from "../data/project.data";
-import responseBody from "../helper/response.helper";
+import reponseHelper from "../helper/response.helper";
+import imageHelper from "../helper/image.helper";
 
-const create = async (req: Request, res: Response, next: NextFunction) => {
+const create = async (req: any, res: Response, next: NextFunction) => {
   try {
     const projectTags = (
       typeof req.body.projectTags === "string"
@@ -10,13 +11,20 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
         : req.body.projectTags || []
     ).map((tag: string) => ({ name: tag }));
 
+    const imageUrls = await imageHelper.upload(
+      req.files as Express.Multer.File[]
+    );
+    const mappedImages = imageUrls.map((url: string) => ({ imageUrl: url }));
+
+    req.body.userId = req.user.id;
+    req.body.projectImages = mappedImages;
     req.body.projectTags = projectTags;
 
     const project = await projectData.create(req.body);
 
     return res
       .status(201)
-      .json(responseBody("create project success", null, project));
+      .json(reponseHelper("create project success", null, project));
   } catch (error) {
     next(error);
   }
@@ -28,7 +36,7 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
 
     return res
       .status(200)
-      .json(responseBody("list projects success", null, projects));
+      .json(reponseHelper("list projects success", null, projects));
   } catch (error) {
     next(error);
   }
@@ -40,7 +48,7 @@ const getById = async (req: Request, res: Response, next: NextFunction) => {
 
     return res
       .status(200)
-      .json(responseBody("get project by id success", null, user));
+      .json(reponseHelper("get project by id success", null, user));
   } catch (error) {
     next(error);
   }
@@ -52,7 +60,7 @@ const updateById = async (req: Request, res: Response, next: NextFunction) => {
 
     return res
       .status(200)
-      .json(responseBody("update project success", null, project));
+      .json(reponseHelper("update project success", null, project));
   } catch (error) {
     next(error);
   }
@@ -64,7 +72,7 @@ const deleteById = async (req: Request, res: Response, next: NextFunction) => {
 
     return res
       .status(200)
-      .json(responseBody("delete project success", null, project));
+      .json(reponseHelper("delete project success", null, project));
   } catch (error) {
     next(error);
   }
