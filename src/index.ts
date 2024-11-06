@@ -9,6 +9,7 @@ import userHandler from "./handler/user.handler";
 import projectHandler from "./handler/project.handler";
 import partnerHandler from "./handler/partner.handler";
 import projectDiscussionHandler from "./handler/project.discussion.handler";
+import partnerDiscussionHandler from "./handler/partner.discussion.handler";
 import errorMw from "./middleware/error.mw";
 
 const app = express();
@@ -25,6 +26,7 @@ app.use("/api/users", userHandler);
 app.use("/api/projects", projectHandler);
 app.use("/api/partners", partnerHandler);
 app.use("/api/discussions/projects", projectDiscussionHandler);
+app.use("/api/discussions/partners", partnerDiscussionHandler);
 
 app.use(errorMw.jsonErrorHandler);
 app.use(errorMw.joiErrorHandler);

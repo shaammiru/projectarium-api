@@ -1,8 +1,13 @@
 import joi from "joi";
 
-const create = joi.object({
+const createProject = joi.object({
   comment: joi.string().required(),
   projectId: joi.string().required(),
+});
+
+const createPartner = joi.object({
+  comment: joi.string().required(),
+  partnerId: joi.string().required(),
 });
 
 const reply = joi.object({
@@ -10,6 +15,7 @@ const reply = joi.object({
 });
 
 export default {
-  create,
+  createProject,
+  createPartner,
   reply,
 };

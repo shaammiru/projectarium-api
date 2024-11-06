@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { verifyToken } from "../middleware/auth.mw";
+import { checkToken, verifyToken } from "../middleware/auth.mw";
 import validate from "../middleware/valid.mw";
 import partnerValid from "../validation/partner.valid";
 import partnerService from "../service/partner.service";
@@ -15,9 +15,9 @@ router.post(
   partnerService.create
 );
 
-router.get("/", partnerService.list);
+router.get("/", checkToken, partnerService.list);
 
-router.get("/:id", partnerService.getById);
+router.get("/:id", checkToken, partnerService.getById);
 
 router.put(
   "/:id",

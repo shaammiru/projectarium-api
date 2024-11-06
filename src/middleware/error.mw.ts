@@ -45,6 +45,12 @@ const prismaErrorHandler = (
         return res
           .status(400)
           .json(responseBody("duplicate record", err.code, null));
+      case "P2003":
+        return res
+          .status(400)
+          .json(
+            responseBody("violates foreign key constraint", err.code, null)
+          );
       case "P2025":
         return res
           .status(404)

@@ -11,8 +11,16 @@ const paramsSchema = joi.object({
     .required(),
 });
 
-const querySchema = joi.object({
+const projectQuery = joi.object({
   project_id: joi
+    .string()
+    .uuid({ version: "uuidv4" })
+    .message("Invalid UUID format")
+    .required(),
+});
+
+const partnerQuery = joi.object({
+  partner_id: joi
     .string()
     .uuid({ version: "uuidv4" })
     .message("Invalid UUID format")
@@ -30,10 +38,21 @@ const params = () => {
   };
 };
 
-const query = () => {
+const queryProject = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await querySchema.validateAsync(req.query as any);
+      await projectQuery.validateAsync(req.query as any);
+      next();
+    } catch (error) {
+      next(error);
+    }
+  };
+};
+
+const queryPartner = () => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await partnerQuery.validateAsync(req.query as any);
       next();
     } catch (error) {
       next(error);
@@ -100,7 +119,8 @@ const imageUpdate = async (req: Request, res: Response, next: NextFunction) => {
 
 export default {
   params,
-  query,
+  queryProject,
+  queryPartner,
   body,
   image,
   imageUpdate,
