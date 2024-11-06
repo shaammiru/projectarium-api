@@ -67,7 +67,7 @@ CREATE TABLE "project_links" (
 -- CreateTable
 CREATE TABLE "project_likes" (
     "id" UUID NOT NULL,
-    "userId" UUID NOT NULL,
+    "userId" UUID,
     "projectId" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -79,20 +79,12 @@ CREATE TABLE "partners" (
     "id" UUID NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
+    "valid_until" TIMESTAMP(3) NOT NULL,
     "user_id" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "partners_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "partner_images" (
-    "id" UUID NOT NULL,
-    "image_url" TEXT NOT NULL,
-    "partnerId" UUID NOT NULL,
-
-    CONSTRAINT "partner_images_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -102,6 +94,15 @@ CREATE TABLE "partner_tags" (
     "project_id" UUID NOT NULL,
 
     CONSTRAINT "partner_tags_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "partner_links" (
+    "id" UUID NOT NULL,
+    "url" TEXT NOT NULL,
+    "partner_id" UUID NOT NULL,
+
+    CONSTRAINT "partner_links_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -165,19 +166,19 @@ ALTER TABLE "project_images" ADD CONSTRAINT "project_images_projectId_fkey" FORE
 ALTER TABLE "project_links" ADD CONSTRAINT "project_links_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "projects"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "project_likes" ADD CONSTRAINT "project_likes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "project_likes" ADD CONSTRAINT "project_likes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "project_likes" ADD CONSTRAINT "project_likes_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "projects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "project_likes" ADD CONSTRAINT "project_likes_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "projects"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "partners" ADD CONSTRAINT "partners_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "partner_images" ADD CONSTRAINT "partner_images_partnerId_fkey" FOREIGN KEY ("partnerId") REFERENCES "partners"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "partner_tags" ADD CONSTRAINT "partner_tags_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "partners"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "partner_tags" ADD CONSTRAINT "partner_tags_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "partners"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "partner_links" ADD CONSTRAINT "partner_links_partner_id_fkey" FOREIGN KEY ("partner_id") REFERENCES "partners"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "partner_likes" ADD CONSTRAINT "partner_likes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

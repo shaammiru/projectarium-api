@@ -117,14 +117,15 @@ model Partner {
 
   user User @relation(fields: [userId], references: [id])
 
-  partnertTags       PartnertTag[]
+  partnerTags        PartnerTag[]
   partnerDiscussions PartnerDiscussion[]
-  partnerLike        PartnerLike[]
+  partnerLikes       PartnerLike[]
+  partnerLinks       PartnerLink[]
 
   @@map("partners")
 }
 
-model PartnertTag {
+model PartnerTag {
   id        String @id @default(uuid()) @db.Uuid
   name      String
   partnerId String @map("project_id") @db.Uuid
@@ -132,6 +133,16 @@ model PartnertTag {
   partner Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
 
   @@map("partner_tags")
+}
+
+model PartnerLink {
+  id        String @id @default(uuid()) @db.Uuid
+  url       String
+  partnerId String @map("partner_id") @db.Uuid
+
+  partner Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@map("partner_links")
 }
 
 model PartnerLike {
