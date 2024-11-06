@@ -54,8 +54,36 @@ const getById = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const updateById = async (req: Request, res: Response, next: NextFunction) => {
+const updateById = async (req: any, res: Response, next: NextFunction) => {
   try {
+    const projectTags = (
+      typeof req.body.projectTags === "string"
+        ? req.body.projectTags.split(",").map((tag: string) => tag.trim())
+        : req.body.projectTags || []
+    ).map((tag: string) => ({ name: tag }));
+
+    req.body.userId = req.user.id;
+    req.body.projectTags = projectTags;
+
+    if (req.files && req.files.length > 0) {
+      const projectId = req.params.id;
+
+      const existingProjectImages = await projectData.listProjectImages(
+        projectId
+      );
+
+      for (const image of existingProjectImages) {
+        await imageHelper.remove(image.imageUrl);
+      }
+
+      const imageUrls = await imageHelper.upload(
+        req.files as Express.Multer.File[]
+      );
+      const mappedImages = imageUrls.map((url: string) => ({ imageUrl: url }));
+
+      req.body.projectImages = mappedImages;
+    }
+
     const project = await projectData.updateById(req.params.id, req.body);
 
     return res
@@ -68,7 +96,14 @@ const updateById = async (req: Request, res: Response, next: NextFunction) => {
 
 const deleteById = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const existingProjectImages = await projectData.listProjectImages(
+      req.params.id
+    );
     const project = await projectData.deleteById(req.params.id);
+
+    for (const image of existingProjectImages) {
+      await imageHelper.remove(image.imageUrl);
+    }
 
     return res
       .status(200)

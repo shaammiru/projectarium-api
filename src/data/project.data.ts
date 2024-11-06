@@ -69,6 +69,12 @@ const list = () => {
   });
 };
 
+const listProjectImages = (projectId: string) => {
+  return prisma.projectImage.findMany({
+    where: { projectId: projectId },
+  });
+};
+
 const getById = (id: string) => {
   return prisma.project.findUnique({
     where: {
@@ -138,6 +144,26 @@ const updateById = (
           create: data.projectImages,
         },
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            fullname: true,
+            role: true,
+          },
+        },
+        projectTags: {
+          select: {
+            name: true,
+          },
+        },
+        projectImages: {
+          select: {
+            imageUrl: true,
+          },
+        },
+      },
     });
 
     return updatedProject;
@@ -156,6 +182,7 @@ export default {
   create,
   list,
   getById,
+  listProjectImages,
   updateById,
   deleteById,
 };

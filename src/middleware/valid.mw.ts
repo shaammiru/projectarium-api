@@ -60,25 +60,23 @@ const image = (fieldName: string) => {
   };
 };
 
-const imageUpdate = () => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    if (req.files && Array.isArray(req.files) && req.files.length > 0) {
-      for (const file of req.files) {
-        const validationResult = await validateBufferMIMEType(file.buffer, {
-          originalFilename: file.originalname,
-          allowMimeTypes: ["image/jpeg", "image/jpg", "image/png"],
-        });
+const imageUpdate = async (req: Request, res: Response, next: NextFunction) => {
+  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+    for (const file of req.files) {
+      const validationResult = await validateBufferMIMEType(file.buffer, {
+        originalFilename: file.originalname,
+        allowMimeTypes: ["image/jpeg", "image/jpg", "image/png"],
+      });
 
-        if (validationResult.error) {
-          return next(
-            new MulterError("LIMIT_UNEXPECTED_FILE", "File type not allowed")
-          );
-        }
+      if (validationResult.error) {
+        return next(
+          new MulterError("LIMIT_UNEXPECTED_FILE", "File type not allowed")
+        );
       }
     }
+  }
 
-    next();
-  };
+  next();
 };
 
 export default {
