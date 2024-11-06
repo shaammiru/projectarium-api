@@ -11,10 +11,29 @@ const paramsSchema = joi.object({
     .required(),
 });
 
+const querySchema = joi.object({
+  project_id: joi
+    .string()
+    .uuid({ version: "uuidv4" })
+    .message("Invalid UUID format")
+    .required(),
+});
+
 const params = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       await paramsSchema.validateAsync(req.params);
+      next();
+    } catch (error) {
+      next(error);
+    }
+  };
+};
+
+const query = () => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await querySchema.validateAsync(req.query as any);
       next();
     } catch (error) {
       next(error);
@@ -81,6 +100,7 @@ const imageUpdate = async (req: Request, res: Response, next: NextFunction) => {
 
 export default {
   params,
+  query,
   body,
   image,
   imageUpdate,

@@ -166,9 +166,9 @@ model ProjectDiscussion {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
 
-  user               User               @relation(fields: [userId], references: [id])
-  project            Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectDiscussions ProjectDiscussion? @relation("project_discussions.discussion_id_TO_project_discussion", fields: [discussionId], references: [id], onDelete: Cascade)
+  user              User               @relation(fields: [userId], references: [id])
+  project           Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectDiscussion ProjectDiscussion? @relation("project_discussions.discussion_id_TO_project_discussion", fields: [discussionId], references: [id], onDelete: Cascade)
 
   replies ProjectDiscussion[] @relation("project_discussions.discussion_id_TO_project_discussion")
 
@@ -184,9 +184,9 @@ model PartnerDiscussion {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @default(now()) @updatedAt @map("updated_at")
 
-  user               User               @relation(fields: [userId], references: [id])
-  partner            Partner            @relation(fields: [partnerId], references: [id], onDelete: Cascade)
-  partnerDiscussions PartnerDiscussion? @relation("partner_discussions.discussion_id_TO_partner_discussion", fields: [discussionId], references: [id], onDelete: Cascade)
+  user              User               @relation(fields: [userId], references: [id])
+  partner           Partner            @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  partnerDiscussion PartnerDiscussion? @relation("partner_discussions.discussion_id_TO_partner_discussion", fields: [discussionId], references: [id], onDelete: Cascade)
 
   replies PartnerDiscussion[] @relation("partner_discussions.discussion_id_TO_partner_discussion")
 

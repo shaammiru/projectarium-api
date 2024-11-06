@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Prisma } from "@prisma/client";
 import { ValidationError } from "joi";
-// import { MulterError } from "multer";
+import { MulterError } from "multer";
 import responseBody from "../helper/response.helper";
 
 const jsonErrorHandler = (
@@ -57,35 +57,35 @@ const prismaErrorHandler = (
   next(err);
 };
 
-// const multerErrorHandler = (
-//   err: unknown,
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   if (err instanceof MulterError) {
-//     switch (err.code) {
-//       case "LIMIT_UNEXPECTED_FILE":
-//         if (err.field === "File type not allowed") {
-//           return res
-//             .status(400)
-//             .json(responseBody("File type not allowed", err.message, null));
-//         }
+const multerErrorHandler = (
+  err: unknown,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (err instanceof MulterError) {
+    switch (err.code) {
+      case "LIMIT_UNEXPECTED_FILE":
+        if (err.field === "File type not allowed") {
+          return res
+            .status(400)
+            .json(responseBody("File type not allowed", err.message, null));
+        }
 
-//         return res
-//           .status(400)
-//           .json(responseBody("Unexpected field", err.message, null));
-//       case "LIMIT_FILE_SIZE":
-//         return res
-//           .status(400)
-//           .json(responseBody("File too large", err.message, null));
-//       default:
-//         next(err);
-//     }
-//   }
+        return res
+          .status(400)
+          .json(responseBody("Unexpected field", err.message, null));
+      case "LIMIT_FILE_SIZE":
+        return res
+          .status(400)
+          .json(responseBody("File too large", err.message, null));
+      default:
+        next(err);
+    }
+  }
 
-//   next(err);
-// };
+  next(err);
+};
 
 const errorHandler = (
   err: unknown,
@@ -101,6 +101,6 @@ export default {
   jsonErrorHandler,
   joiErrorHandler,
   prismaErrorHandler,
-  // multerErrorHandler,
+  multerErrorHandler,
   errorHandler,
 };
