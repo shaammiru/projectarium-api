@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import authHelper from "../helper/auth.helper";
-import userService from "../data/user.data";
+import userData from "../data/user.data";
 import responseBody from "../helper/response.helper";
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
     req.body.password = await authHelper.hashPassword(req.body.password);
-    const user = await userService.create(req.body);
+    const user = await userData.create(req.body);
 
     return res.status(201).json(responseBody("register success", null, user));
   } catch (error) {
@@ -17,7 +17,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { username, password } = req.body;
-    const user = await userService.getByUsername(username);
+    const user = await userData.getByUsername(username);
 
     if (!user) {
       return res.status(404).json(responseBody("user not found", null, null));
@@ -38,6 +38,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       id: user.id,
       username: user.username,
       fullname: user.fullname,
+      role: user.role,
     });
 
     return res.status(200).json(responseBody("login success", null, { token }));

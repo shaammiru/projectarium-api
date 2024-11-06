@@ -13,7 +13,7 @@ const jsonErrorHandler = (
   if (err instanceof SyntaxError) {
     return res
       .status(400)
-      .json(responseBody("Invalid JSON format", err.message, null));
+      .json(responseBody("invalid JSON format", err.message, null));
   }
   next(err);
 };
@@ -27,7 +27,7 @@ const joiErrorHandler = (
   if (err instanceof ValidationError) {
     return res
       .status(400)
-      .json(responseBody("Validation error", err.details[0].message, null));
+      .json(responseBody("validation error", err.details[0].message, null));
   }
 
   next(err);
@@ -44,11 +44,11 @@ const prismaErrorHandler = (
       case "P2002":
         return res
           .status(400)
-          .json(responseBody("Duplicate record", err.message, null));
+          .json(responseBody("duplicate record", err.code, null));
       case "P2025":
         return res
           .status(404)
-          .json(responseBody("Record not found", err.message, null));
+          .json(responseBody("record not found", err.code, null));
       default:
         next(err);
     }
@@ -94,7 +94,7 @@ const errorHandler = (
   next: NextFunction
 ) => {
   console.error(err);
-  return res.status(500).json(responseBody("Internal server error", err, null));
+  return res.status(500).json(responseBody("internal server error", err, null));
 };
 
 export default {
