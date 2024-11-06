@@ -1,16 +1,22 @@
 import { NextFunction, Request, Response } from "express";
-import authHelper from "../helper/auth.helper";
-import userData from "../data/user.data";
+import projectData from "../data/project.data";
 import responseBody from "../helper/response.helper";
 
 const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    req.body.password = await authHelper.hashPassword(req.body.password);
-    const user = await userData.create(req.body);
+    const projectTags = (
+      typeof req.body.projectTags === "string"
+        ? req.body.projectTags.split(",").map((tag: string) => tag.trim())
+        : req.body.projectTags || []
+    ).map((tag: string) => ({ name: tag }));
+
+    req.body.projectTags = projectTags;
+
+    const project = await projectData.create(req.body);
 
     return res
       .status(201)
-      .json(responseBody("create user success", null, user));
+      .json(responseBody("create project success", null, project));
   } catch (error) {
     next(error);
   }
@@ -18,11 +24,11 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
 
 const list = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await userData.list();
+    const projects = await projectData.list();
 
     return res
       .status(200)
-      .json(responseBody("list users success", null, users));
+      .json(responseBody("list projects success", null, projects));
   } catch (error) {
     next(error);
   }
@@ -30,11 +36,11 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
 
 const getById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await userData.getById(req.params.id);
+    const user = await projectData.getById(req.params.id);
 
     return res
       .status(200)
-      .json(responseBody("get user by id success", null, user));
+      .json(responseBody("get project by id success", null, user));
   } catch (error) {
     next(error);
   }
@@ -42,12 +48,11 @@ const getById = async (req: Request, res: Response, next: NextFunction) => {
 
 const updateById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    req.body.password = await authHelper.hashPassword(req.body.password);
-    const users = await userData.updateById(req.params.id, req.body);
+    const project = await projectData.updateById(req.params.id, req.body);
 
     return res
       .status(200)
-      .json(responseBody("update user success", null, users));
+      .json(responseBody("update project success", null, project));
   } catch (error) {
     next(error);
   }
@@ -55,11 +60,11 @@ const updateById = async (req: Request, res: Response, next: NextFunction) => {
 
 const deleteById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await userData.deleteById(req.params.id);
+    const project = await projectData.deleteById(req.params.id);
 
     return res
       .status(200)
-      .json(responseBody("delete user success", null, users));
+      .json(responseBody("delete project success", null, project));
   } catch (error) {
     next(error);
   }

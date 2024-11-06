@@ -1,18 +1,18 @@
 import { Router } from "express";
 import { verifyAdmin, verifyToken, verifyUser } from "../middleware/auth.mw";
-import { validateBody, validateParams } from "../middleware/valid.mw";
+import validate from "../middleware/valid.mw";
 import userValid from "../validation/user.valid";
 import userService from "../service/user.service";
 
 const router = Router();
 
-router.param("id", validateParams());
+router.param("id", validate.params());
 
 router.post(
   "/",
   verifyToken,
   verifyAdmin,
-  validateBody(userValid.create),
+  validate.body(userValid.create),
   userService.create
 );
 
@@ -24,7 +24,7 @@ router.put(
   "/:id",
   verifyToken,
   verifyUser,
-  validateBody(userValid.update),
+  validate.body(userValid.update),
   userService.updateById
 );
 

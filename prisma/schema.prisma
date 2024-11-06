@@ -27,6 +27,8 @@ model User {
   partners           Partner[]
   projectDiscussions ProjectDiscussion[]
   partnerDiscussions PartnerDiscussion[]
+  projectLikes       ProjectLike[]
+  partnerLikes       PartnerLike[]
 
   @@map("users")
 }
@@ -42,6 +44,8 @@ model Project {
 
   projectTags        ProjectTag[]
   projectDiscussions ProjectDiscussion[]
+  projectLikes       ProjectLike[]
+  projectImages      ProjectImage[]
 
   @@map("projects")
 }
@@ -56,6 +60,29 @@ model ProjectTag {
   @@map("project_tags")
 }
 
+model ProjectImage {
+  id        String @id @default(uuid()) @db.Uuid
+  imageUrl  String @map("image_url")
+  projectId String @db.Uuid
+
+  project Project @relation(fields: [projectId], references: [id])
+
+  @@map("project_images")
+}
+
+model ProjectLike {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  projectId String   @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id])
+  project Project @relation(fields: [projectId], references: [id])
+
+  @@unique([userId, projectId])
+  @@map("project_likes")
+}
+
 model Partner {
   id        String   @id @default(uuid()) @db.Uuid
   title     String
@@ -67,8 +94,20 @@ model Partner {
 
   partnertTags       PartnertTag[]
   partnerDiscussions PartnerDiscussion[]
+  partnerLike        PartnerLike[]
+  partnerImages      PartnerImage[]
 
   @@map("partners")
+}
+
+model PartnerImage {
+  id        String @id @default(uuid()) @db.Uuid
+  imageUrl  String @map("image_url")
+  partnerId String @db.Uuid
+
+  partner Partner @relation(fields: [partnerId], references: [id])
+
+  @@map("partner_images")
 }
 
 model PartnertTag {
@@ -79,6 +118,19 @@ model PartnertTag {
   partner Partner @relation(fields: [partnerId], references: [id])
 
   @@map("partner_tags")
+}
+
+model PartnerLike {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  partnerId String   @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id])
+  partner Partner @relation(fields: [partnerId], references: [id])
+
+  @@unique([userId, partnerId])
+  @@map("partner_likes")
 }
 
 model ProjectDiscussion {

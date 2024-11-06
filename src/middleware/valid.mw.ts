@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from "express";
+import { validateBufferMIMEType } from "validate-image-type";
+import { MulterError } from "multer";
 import joi from "joi";
 
 const paramsSchema = joi.object({
@@ -9,7 +11,7 @@ const paramsSchema = joi.object({
     .required(),
 });
 
-export const validateParams = () => {
+const params = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       await paramsSchema.validateAsync(req.params);
@@ -20,7 +22,7 @@ export const validateParams = () => {
   };
 };
 
-export const validateBody = (schema: joi.ObjectSchema<any>) => {
+const body = (schema: joi.ObjectSchema<any>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const validData = await schema.validateAsync(req.body);
@@ -31,4 +33,57 @@ export const validateBody = (schema: joi.ObjectSchema<any>) => {
       next(error);
     }
   };
+};
+
+const image = (fieldName: string) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
+      return res
+        .status(400)
+        .json({ error: `image files for "${fieldName}" are required` });
+    }
+
+    for (const file of req.files) {
+      const validationResult = await validateBufferMIMEType(file.buffer, {
+        originalFilename: file.originalname,
+        allowMimeTypes: ["image/jpeg", "image/jpg", "image/png"],
+      });
+
+      if (validationResult.error) {
+        return next(
+          new MulterError("LIMIT_UNEXPECTED_FILE", "file type not allowed")
+        );
+      }
+    }
+
+    next();
+  };
+};
+
+const imageUpdate = () => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+      for (const file of req.files) {
+        const validationResult = await validateBufferMIMEType(file.buffer, {
+          originalFilename: file.originalname,
+          allowMimeTypes: ["image/jpeg", "image/jpg", "image/png"],
+        });
+
+        if (validationResult.error) {
+          return next(
+            new MulterError("LIMIT_UNEXPECTED_FILE", "File type not allowed")
+          );
+        }
+      }
+    }
+
+    next();
+  };
+};
+
+export default {
+  params,
+  body,
+  image,
+  imageUpdate,
 };

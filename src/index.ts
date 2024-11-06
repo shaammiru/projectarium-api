@@ -5,6 +5,7 @@ import helmet from "helmet";
 import compression from "compression";
 import authHandler from "./handler/auth.handler";
 import userHandler from "./handler/user.handler";
+import projectHandler from "./handler/project.handler";
 import errorMw from "./middleware/error.mw";
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(compression());
 
 app.use("/api/auth", authHandler);
 app.use("/api/users", userHandler);
+app.use("/api/projects", projectHandler);
 
 app.use(errorMw.jsonErrorHandler);
 app.use(errorMw.joiErrorHandler);
