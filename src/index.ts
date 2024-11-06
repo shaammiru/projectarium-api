@@ -1,4 +1,5 @@
 import "dotenv/config";
+import path from "path";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 app.use(compression());
+
+app.use("/api/images", express.static(path.join(__dirname, "../images")));
 
 app.use("/api/auth", authHandler);
 app.use("/api/users", userHandler);
