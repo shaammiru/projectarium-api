@@ -88,9 +88,15 @@ const list = () => {
           imageUrl: true,
         },
       },
+      projectLikes: {
+        select: {
+          userId: true,
+        },
+      },
       _count: {
         select: {
           projectLikes: true,
+          projectDiscussions: true,
         },
       },
     },
@@ -127,9 +133,15 @@ const getById = (id: string) => {
           imageUrl: true,
         },
       },
+      projectLikes: {
+        select: {
+          userId: true,
+        },
+      },
       _count: {
         select: {
           projectLikes: true,
+          projectDiscussions: true,
         },
       },
     },

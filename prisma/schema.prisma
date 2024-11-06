@@ -107,31 +107,21 @@ model ProjectLike {
 }
 
 model Partner {
-  id        String   @id @default(uuid()) @db.Uuid
-  title     String
-  content   String   @db.Text
-  userId    String   @map("user_id") @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  id         String   @id @default(uuid()) @db.Uuid
+  title      String
+  content    String   @db.Text
+  validUntil DateTime @map("valid_until")
+  userId     String   @map("user_id") @db.Uuid
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id])
 
   partnertTags       PartnertTag[]
   partnerDiscussions PartnerDiscussion[]
   partnerLike        PartnerLike[]
-  partnerImages      PartnerImage[]
 
   @@map("partners")
-}
-
-model PartnerImage {
-  id        String @id @default(uuid()) @db.Uuid
-  imageUrl  String @map("image_url")
-  partnerId String @db.Uuid
-
-  partner Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
-
-  @@map("partner_images")
 }
 
 model PartnertTag {

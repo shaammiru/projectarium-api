@@ -37,25 +37,49 @@ const create = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
-const list = async (req: Request, res: Response, next: NextFunction) => {
+const list = async (req: any, res: Response, next: NextFunction) => {
   try {
     const projects = await projectData.list();
 
+    const projectsWithIsLiked = projects.map((project) => ({
+      ...project,
+      isLiked: req.user
+        ? project.projectLikes.some((like) => like.userId === req.user.id)
+        : false,
+    }));
+
     return res
       .status(200)
-      .json(reponseHelper("list projects success", null, projects));
+      .json(reponseHelper("list projects success", null, projectsWithIsLiked));
   } catch (error) {
     next(error);
   }
 };
 
-const getById = async (req: Request, res: Response, next: NextFunction) => {
+const getById = async (req: any, res: Response, next: NextFunction) => {
   try {
-    const user = await projectData.getById(req.params.id);
+    const project = await projectData.getById(req.params.id);
+
+    if (!project) {
+      return res
+        .status(404)
+        .json(reponseHelper("project not found", null, null));
+    }
+
+    const isLiked = req.user
+      ? project.projectLikes.some((like) => like.userId === req.user.id)
+      : false;
+
+    const projectWithIsLiked = {
+      ...project,
+      isLiked,
+    };
 
     return res
       .status(200)
-      .json(reponseHelper("get project by id success", null, user));
+      .json(
+        reponseHelper("get project by id success", null, projectWithIsLiked)
+      );
   } catch (error) {
     next(error);
   }

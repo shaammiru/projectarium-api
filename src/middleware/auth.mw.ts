@@ -70,3 +70,25 @@ export const verifyAdmin = async (
 
   return next();
 };
+
+export const checkToken = (req: any, res: Response, next: NextFunction) => {
+  const header = req.headers.authorization as string;
+
+  if (!header) {
+    return next();
+  }
+
+  const token = header.split(" ")[1];
+
+  if (!token) {
+    return next();
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    req.user = decoded;
+    return next();
+  } catch (error) {
+    return next();
+  }
+};
