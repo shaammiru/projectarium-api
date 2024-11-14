@@ -6,9 +6,11 @@ import imageHelper from "../helper/image.helper";
 const create = async (req: any, res: Response, next: NextFunction) => {
   try {
     const projectTags = (
-      typeof req.body.projectTags === "string"
+      Array.isArray(req.body.projectTags)
+        ? req.body.projectTags
+        : typeof req.body.projectTags === "string"
         ? req.body.projectTags.split(",").map((tag: string) => tag.trim())
-        : req.body.projectTags || []
+        : []
     ).map((tag: string) => ({ name: tag }));
 
     const projectLinks = (

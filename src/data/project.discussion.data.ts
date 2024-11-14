@@ -27,6 +27,32 @@ const create = (data: {
   });
 };
 
+const list = () => {
+  return prisma.projectDiscussion.findMany({
+    include: {
+      user: {
+        select: {
+          id: true,
+          username: true,
+          fullname: true,
+        },
+      },
+      replies: {
+        select: {
+          comment: true,
+          user: {
+            select: {
+              id: true,
+              username: true,
+              fullname: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
+
 const listByProjectId = (projectId: string) => {
   return prisma.projectDiscussion.findMany({
     where: {
@@ -75,6 +101,7 @@ const deleteById = (id: string) => {
 
 export default {
   create,
+  list,
   listByProjectId,
   getById,
   deleteById,
