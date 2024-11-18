@@ -27,11 +27,10 @@ const create = (data: {
   });
 };
 
-const listByProjectId = (partnerId: string) => {
+const listByPartnerId = (partnerId: string) => {
   return prisma.partnerDiscussion.findMany({
     where: {
-      partnerId: partnerId,
-      discussionId: null,
+      AND: [{ partnerId: partnerId }, { discussionId: null }],
     },
     include: {
       user: {
@@ -75,7 +74,7 @@ const deleteById = (id: string) => {
 
 export default {
   create,
-  listByProjectId,
+  listByPartnerId,
   getById,
   deleteById,
 };

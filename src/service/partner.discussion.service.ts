@@ -45,14 +45,14 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const projectId = req.query.projectId as string;
 
-    const projectDiscussions = await partnerDiscussionData.listByProjectId(
+    const partnerDiscussions = await partnerDiscussionData.listByPartnerId(
       projectId
     );
 
     return res
       .status(200)
       .json(
-        reponseHelper("list discussions success", null, projectDiscussions)
+        reponseHelper("list discussions success", null, partnerDiscussions)
       );
   } catch (error) {
     next(error);

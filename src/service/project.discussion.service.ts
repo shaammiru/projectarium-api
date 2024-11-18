@@ -46,8 +46,6 @@ const list = async (req: Request, res: Response, next: NextFunction) => {
     let projectDiscussions;
     const projectId = req.query.projectId as string;
 
-    console.log(projectId);
-
     if (projectId) {
       projectDiscussions = await projectDiscussionData.listByProjectId(
         projectId

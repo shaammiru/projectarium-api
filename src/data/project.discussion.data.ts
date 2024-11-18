@@ -56,8 +56,7 @@ const list = () => {
 const listByProjectId = (projectId: string) => {
   return prisma.projectDiscussion.findMany({
     where: {
-      projectId: projectId,
-      discussionId: null,
+      AND: [{ projectId: projectId }, { discussionId: null }],
     },
     include: {
       user: {
