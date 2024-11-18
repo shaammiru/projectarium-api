@@ -44,7 +44,7 @@ const createReply = async (req: any, res: Response, next: NextFunction) => {
 const list = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let projectDiscussions;
-    const projectId = req.query.projectId as string;
+    const projectId = req.query.project_id as string;
 
     if (projectId) {
       projectDiscussions = await projectDiscussionData.listByProjectId(

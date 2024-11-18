@@ -43,10 +43,10 @@ const createReply = async (req: any, res: Response, next: NextFunction) => {
 
 const list = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const projectId = req.query.projectId as string;
+    const partnerId = req.query.partner_id as string;
 
     const partnerDiscussions = await partnerDiscussionData.listByPartnerId(
-      projectId
+      partnerId
     );
 
     return res
