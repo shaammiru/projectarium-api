@@ -76,6 +76,8 @@ const listByProjectId = (projectId: string) => {
               fullname: true,
             },
           },
+          createdAt: true,
+          updatedAt: true,
         },
       },
     },
