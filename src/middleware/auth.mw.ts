@@ -42,14 +42,6 @@ export const verifyUser = async (
     return res.status(404).json(responseBody("user not found", null, null));
   }
 
-  if (user.role === "ADMIN") {
-    return next();
-  }
-
-  if (user.id !== req.params.id) {
-    return res.status(403).json(responseBody("forbidden", null, null));
-  }
-
   return next();
 };
 

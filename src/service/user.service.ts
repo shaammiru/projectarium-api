@@ -60,10 +60,11 @@ const getProfile = async (req: any, res: Response, next: NextFunction) => {
   }
 };
 
-const updateById = async (req: Request, res: Response, next: NextFunction) => {
+const updateById = async (req: any, res: Response, next: NextFunction) => {
   try {
+    const userId = req.user.id;
     req.body.password = await authHelper.hashPassword(req.body.password);
-    const users = await userData.updateById(req.params.id, req.body);
+    const users = await userData.updateById(userId, req.body);
 
     return res
       .status(200)

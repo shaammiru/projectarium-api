@@ -20,15 +20,15 @@ router.get("/", verifyToken, verifyAdmin, userService.list);
 
 router.get("/profile", verifyToken, userService.getProfile);
 
-router.get("/:id", userService.getById);
-
 router.put(
-  "/:id",
+  "/profile",
   verifyToken,
   verifyUser,
   validate.body(userValid.update),
   userService.updateById
 );
+
+router.get("/:id", userService.getById);
 
 router.delete("/:id", verifyToken, verifyAdmin, userService.deleteById);
 
