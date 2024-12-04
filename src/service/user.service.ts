@@ -62,7 +62,12 @@ const getProfile = async (req: any, res: Response, next: NextFunction) => {
 
 const updateById = async (req: any, res: Response, next: NextFunction) => {
   try {
-    req.body.password = await authHelper.hashPassword(req.body.password);
+    if (req.body.password) {
+      req.body.password = await authHelper.hashPassword(req.body.password);
+    } else {
+      delete req.body.password;
+    }
+
     const users = await userData.updateById(req.user.id, req.body);
 
     return res
