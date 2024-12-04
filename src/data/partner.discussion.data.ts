@@ -1,6 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../helper/prisma.helper";
 
 const create = (data: {
   userId: string;
@@ -50,6 +48,8 @@ const listByPartnerId = (partnerId: string) => {
               fullname: true,
             },
           },
+          createdAt: true,
+          updatedAt: true,
         },
       },
     },
