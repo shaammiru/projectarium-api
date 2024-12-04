@@ -40,6 +40,7 @@ const listByPartnerId = (partnerId: string) => {
       },
       replies: {
         select: {
+          id: true,
           comment: true,
           user: {
             select: {

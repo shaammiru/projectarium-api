@@ -37,6 +37,7 @@ const list = () => {
       },
       replies: {
         select: {
+          id: true,
           comment: true,
           user: {
             select: {
@@ -68,6 +69,7 @@ const listByProjectId = (projectId: string) => {
       },
       replies: {
         select: {
+          id: true,
           comment: true,
           user: {
             select: {

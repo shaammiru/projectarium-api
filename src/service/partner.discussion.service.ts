@@ -71,13 +71,33 @@ const getById = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const deleteById = async (req: Request, res: Response, next: NextFunction) => {
+const deleteById = async (req: any, res: Response, next: NextFunction) => {
   try {
-    const project = await partnerDiscussionData.deleteById(req.params.id);
+    const discussion = await partnerDiscussionData.getById(req.params.id);
+
+    if (!discussion) {
+      return res
+        .status(404)
+        .json(reponseHelper("discussion not found", null, null));
+    }
+
+    if (discussion.userId != req.user.id) {
+      return res
+        .status(403)
+        .json(
+          reponseHelper(
+            "delete discussion failed",
+            "you are not allowed to delete this discussion",
+            null
+          )
+        );
+    }
+
+    await partnerDiscussionData.deleteById(req.params.id);
 
     return res
       .status(200)
-      .json(reponseHelper("delete discussion success", null, project));
+      .json(reponseHelper("delete discussion success", null, discussion));
   } catch (error) {
     next(error);
   }
