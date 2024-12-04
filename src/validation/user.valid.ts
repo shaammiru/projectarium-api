@@ -22,7 +22,7 @@ const update = joi.object({
     .min(4)
     .allow(null),
   fullname: joi.string().min(4).allow(null),
-  password: joi.string().min(8).allow(null),
+  password: joi.string().min(8).allow(null, ""),
   birthdate: joi.string().isoDate().allow(null),
   bio: joi.string().allow(null),
   userLinks: joi
